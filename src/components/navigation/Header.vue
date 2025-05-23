@@ -26,6 +26,21 @@
             />
           </div>
         </div>
+        <div
+          class="dropdown-container"
+        >
+          <p class="category">Quản lý đăng ký thực tập</p>
+          <div class="dropdown-wrapper-1" @click.stop>
+            <Dropdown
+              :items="[
+                { label: 'Nguyện vọng thực tập', route: '/internship-application' },
+                { label: 'Kỳ thực tập', route: '/internship-period' },
+                { label: 'Thực tập đơn vị chưa liên kết', route: '/external-internship' },
+                { label: 'Quá trình thực tập', route: '/internship-progress' }
+              ]"
+            />
+          </div>
+        </div>
       </div>
 
       <div v-if="authStore.isAuthenticated" class="info">
