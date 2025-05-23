@@ -282,15 +282,13 @@ const statusOptions = [
   { title: 'Tất cả', value: null },
   { title: 'Hoạt động', value: 'ACTIVE' },
   { title: 'Sắp tới', value: 'UPCOMING' },
-  { title: 'Đã kết thúc', value: 'END' },
-  { title: 'Tạm dừng', value: 'SUSPENDED' }
+  { title: 'Đã kết thúc', value: 'END' }
 ]
 
 const statusSelectOptions = [
   { title: 'Hoạt động', value: 'ACTIVE' },
   { title: 'Sắp tới', value: 'UPCOMING' },
-  { title: 'Đã kết thúc', value: 'END' },
-  { title: 'Tạm dừng', value: 'SUSPENDED' }
+  { title: 'Đã kết thúc', value: 'END' }
 ]
 
 const defaultItem = {
@@ -330,8 +328,7 @@ const getStatusColor = (status) => {
   const colors = {
     'ACTIVE': 'green',
     'UPCOMING': 'blue',
-    'END': 'grey',
-    'SUSPENDED': 'orange'
+    'END': 'grey'
   }
   return colors[status] || 'grey'
 }
@@ -341,8 +338,7 @@ const getStatusText = (status) => {
   const texts = {
     'ACTIVE': 'Hoạt động',
     'UPCOMING': 'Sắp tới',
-    'END': 'Đã kết thúc',
-    'SUSPENDED': 'Tạm dừng'
+    'END': 'Đã kết thúc'
   }
   return texts[status] || status
 }
