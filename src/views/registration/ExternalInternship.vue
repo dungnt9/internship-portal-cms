@@ -260,7 +260,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import {
   getExternalInternships,
-  getExternalInternshipById,
   createExternalInternship,
   updateExternalInternshipStatus,
   updateExternalInternshipFile,
