@@ -286,3 +286,57 @@ export const getInternshipPositionsByCompany = async (companyId) => {
     throw err
   }
 }
+
+export const getInternshipProgress = async () => {
+  try {
+    return await api.get('/registration/cms/admin/management/progress')
+  } catch (err) {
+    console.error('Lỗi:', err.message)
+    throw err
+  }
+}
+
+export const getInternshipProgressById = async (id) => {
+  try {
+    return await api.get(`/registration/cms/admin/management/progress/${id}`)
+  } catch (err) {
+    console.error('Lỗi:', err.message)
+    throw err
+  }
+}
+
+export const getInternshipProgressByPeriod = async (periodId) => {
+  try {
+    return await api.get(`/registration/cms/admin/management/progress/period/${periodId}`)
+  } catch (err) {
+    console.error('Lỗi:', err.message)
+    throw err
+  }
+}
+
+export const createInternshipProgress = async (progressData) => {
+  try {
+    return await api.post('/registration/cms/admin/management/progress', progressData)
+  } catch (err) {
+    console.error('Lỗi:', err.message)
+    throw err
+  }
+}
+
+export const updateInternshipProgress = async (id, progressData) => {
+  try {
+    return await api.put(`/registration/cms/admin/management/progress/${id}`, progressData)
+  } catch (err) {
+    console.error('Lỗi:', err.message)
+    throw err
+  }
+}
+
+export const deleteInternshipProgressById = async (id) => {
+  try {
+    return await api.delete(`/registration/cms/admin/management/progress/${id}`)
+  } catch (err) {
+    console.error('Lỗi:', err.message)
+    throw err
+  }
+}
