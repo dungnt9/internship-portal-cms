@@ -59,6 +59,12 @@ const router = createRouter({
       component: () => import('../views/registration/InternshipPeriod.vue'),
       meta: { layout: 'default', requiresAuth: true },
     },
+    {
+      path: '/internship-application',
+      name: 'internship-application',
+      component: () => import('../views/registration/InternshipApplication.vue'),
+      meta: { layout: 'default', requiresAuth: true },
+    },
   ],
 })
 
