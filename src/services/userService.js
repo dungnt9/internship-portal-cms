@@ -181,3 +181,12 @@ export const updateCompany = async (payload) => {
     throw err
   }
 }
+
+export const getAllCompanies = async () => {
+  try {
+    return await api.get('/user/companies/all')
+  } catch (err) {
+    console.error('Lỗi khi lấy danh sách công ty:', err.message)
+    throw err
+  }
+}

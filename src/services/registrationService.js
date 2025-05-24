@@ -198,7 +198,8 @@ export const uploadApplicationCV = async (id, file) => {
       }
     })
   } catch (err) {
-    console.error('Lỗi:', err.message)
+    console.error('Lỗi upload CV:', err.message)
+    console.error('Error details:', err.response?.data)
     throw err
   }
 }
@@ -258,10 +259,19 @@ export const deleteApplicationDetailById = async (id) => {
   }
 }
 
-// Internship Position APIs (needed for position selection in details)
+// Internship Position APIs (sửa đường dẫn cho đúng)
 export const getInternshipPositions = async () => {
   try {
-    return await api.get('/registration/positions/all')
+    return await api.get('/registration/positions/admin/all')
+  } catch (err) {
+    console.error('Lỗi:', err.message)
+    throw err
+  }
+}
+
+export const getInternshipPositionsByPeriod = async (periodId) => {
+  try {
+    return await api.get(`/registration/positions/admin/period/${periodId}`)
   } catch (err) {
     console.error('Lỗi:', err.message)
     throw err
