@@ -41,6 +41,19 @@
             />
           </div>
         </div>
+        <div
+          class="dropdown-container"
+        >
+          <p class="category">Quản lý đánh giá thực tập</p>
+          <div class="dropdown-wrapper-1" @click.stop>
+            <Dropdown
+              :items="[
+                { label: 'Báo cáo thực tập', route: '/internship-report' },
+                { label: 'Tiêu chí đánh giá', route: '/evaluation-criteria' },
+              ]"
+            />
+          </div>
+        </div>
       </div>
 
       <div v-if="authStore.isAuthenticated" class="info">

@@ -71,6 +71,18 @@ const router = createRouter({
       component: () => import('../views/registration/InternshipProgress.vue'),
       meta: { layout: 'default', requiresAuth: true },
     },
+    {
+      path: '/internship-report',
+      name: 'internship-report',
+      component: () => import('../views/evaluation/InternshipReport.vue'),
+      meta: { layout: 'default', requiresAuth: true },
+    },
+    {
+      path: '/evaluation-criteria',
+      name: 'evaluation-criteria',
+      component: () => import('../views/evaluation/EvaluationCriteria.vue'),
+      meta: { layout: 'default', requiresAuth: true },
+    },
   ],
 })
 
