@@ -73,3 +73,48 @@ export const deleteInternshipReport = async (id) => {
     throw err
   }
 }
+
+export const getEvaluationCriteria = async () => {
+  try {
+    return await api.get('/evaluation/cms/evaluation-criteria')
+  } catch (err) {
+    console.error('Lỗi khi lấy danh sách tiêu chí đánh giá:', err.message)
+    throw err
+  }
+}
+
+export const getEvaluationCriteriaById = async (id) => {
+  try {
+    return await api.get(`/evaluation/cms/evaluation-criteria/${id}`)
+  } catch (err) {
+    console.error('Lỗi khi lấy chi tiết tiêu chí đánh giá:', err.message)
+    throw err
+  }
+}
+
+export const createEvaluationCriteria = async (criteriaData) => {
+  try {
+    return await api.post('/evaluation/cms/evaluation-criteria', criteriaData)
+  } catch (err) {
+    console.error('Lỗi khi tạo tiêu chí đánh giá:', err.message)
+    throw err
+  }
+}
+
+export const updateEvaluationCriteria = async (id, criteriaData) => {
+  try {
+    return await api.put(`/evaluation/cms/evaluation-criteria/${id}`, criteriaData)
+  } catch (err) {
+    console.error('Lỗi khi cập nhật tiêu chí đánh giá:', err.message)
+    throw err
+  }
+}
+
+export const deleteEvaluationCriteria = async (id) => {
+  try {
+    return await api.delete(`/evaluation/cms/evaluation-criteria/${id}`)
+  } catch (err) {
+    console.error('Lỗi khi xóa tiêu chí đánh giá:', err.message)
+    throw err
+  }
+}
