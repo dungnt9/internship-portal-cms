@@ -18,6 +18,18 @@ const router = createRouter({
       meta: { layout: 'default', requiresGuest: true },
     },
     {
+      path: '/doi-mat-khau',
+      name: 'doi-mat-khau',
+      component: () => import('../views/common/ChangePasswordView.vue'),
+      meta: { layout: 'default', requiresAuth: true },
+    },
+    {
+      path: '/thong-tin-ca-nhan',
+      name: 'thong-tin-ca-nhan',
+      component: () => import('../views/common/ProfileView.vue'),
+      meta: { layout: 'default', requiresAuth: true },
+    },
+    {
       path: '/admin',
       name: 'admin',
       component: () => import('../views/user/Admin.vue'),

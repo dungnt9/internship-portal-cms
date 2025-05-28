@@ -1,5 +1,40 @@
 import api from './apiService'
 
+export const getInfoAdmin = async () => {
+  try {
+    return await api.get('/user/admin/me')
+  } catch (err) {
+    console.error('Lỗi lấy thông tin quản trị viên:', err.message)
+    throw err
+  }
+}
+
+export const putInfoAdmin = async (payload) => {
+  try {
+    return await api.put('/user/admin/me', payload)
+  } catch (err) {
+    console.error('Lỗi cập nhật thông tin quản trị viên:', err.message)
+    throw err
+  }
+}
+
+// Avatar upload function (common for all user types)
+export const uploadAvatar = async (file) => {
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    return await api.post('/user/upload/avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+  } catch (err) {
+    console.error('Lỗi upload avatar:', err.message)
+    throw err
+  }
+}
+
 // Admin APIs
 export const getAdmins = async () => {
   try {
