@@ -351,6 +351,12 @@ import {
 } from '@/services/registrationService'
 import { getStudents, getAllCompanies } from '@/services/userService'
 import TeleportModal from '@/components/TeleportModal.vue'
+import { viewFile as getFileViewUrl } from '@/services/fileService'
+
+const viewFile = (filePath) => {
+  const fileUrl = getFileViewUrl(filePath)  // ✅ Gọi function import
+  window.open(fileUrl, '_blank')
+}
 
 // Data
 const applications = ref([])
@@ -488,10 +494,6 @@ const formatDate = (dateString) => {
   if (!dateString) return ''
   const date = new Date(dateString)
   return date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN')
-}
-
-const viewFile = (filePath) => {
-  window.open(filePath, '_blank')
 }
 
 const getFilteredPositions = () => {

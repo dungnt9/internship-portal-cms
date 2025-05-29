@@ -268,6 +268,12 @@ import {
 import { getStudents } from '@/services/userService'
 import { getInternshipPeriods } from '@/services/registrationService'
 import TeleportModal from '@/components/TeleportModal.vue'
+import { viewFile as getFileViewUrl } from '@/services/fileService'
+
+const viewFile = (filePath) => {
+  const fileUrl = getFileViewUrl(filePath)  // ✅ Gọi function import
+  window.open(fileUrl, '_blank')
+}
 
 const externalInternships = ref([])
 const students = ref([])
@@ -363,12 +369,6 @@ const formatDate = (dateString) => {
   if (!dateString) return ''
   const date = new Date(dateString)
   return date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN')
-}
-
-// View file
-const viewFile = (filePath) => {
-  // In real app, this would open the file or download it
-  window.open(filePath, '_blank')
 }
 
 // Computed property để lọc dữ liệu
