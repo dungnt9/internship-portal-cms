@@ -382,6 +382,7 @@ import {
 } from '@/services/evaluationService'
 import { getInternshipProgress, getInternshipPeriods } from '@/services/registrationService'
 import TeleportModal from '@/components/TeleportModal.vue'
+import { viewEvaluationFile } from '@/services/fileService'
 
 // Data
 const reports = ref([])
@@ -511,8 +512,8 @@ const formatDate = (dateString) => {
 // View file
 const viewFile = (filePath) => {
   if (filePath) {
-    // Construct full URL if needed
-    const fullUrl = filePath.startsWith('http') ? filePath : `http://localhost:8000${filePath}`
+    // Use evaluation service for report files
+    const fullUrl = viewEvaluationFile(filePath)
     window.open(fullUrl, '_blank')
   }
 }
@@ -657,13 +658,13 @@ const save = async () => {
       // Create new report
       const formData = new FormData()
 
-      // Append report data as JSON
+      // Append report data as JSON blob
       const reportData = {
         progressId: editedItem.progressId,
         title: editedItem.title,
         content: editedItem.content
       }
-      formData.append('data', JSON.stringify(reportData))
+      formData.append('data', new Blob([JSON.stringify(reportData)], { type: 'application/json' }))
 
       // Append file if selected
       if (reportFile.value) {

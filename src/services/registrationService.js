@@ -59,9 +59,9 @@ export const deleteExternalInternshipById = async (id) => {
 // Internship Period APIs
 export const getInternshipPeriods = async () => {
   try {
-    return await api.get('/registration/periods')
+    return await api.get('/registration/cms/periods')
   } catch (err) {
-    console.error('Lỗi:', err.message)
+    console.error('Lỗi khi lấy danh sách kỳ thực tập:', err.message)
     throw err
   }
 }
@@ -289,9 +289,9 @@ export const getInternshipPositionsByCompany = async (companyId) => {
 
 export const getInternshipProgress = async () => {
   try {
-    return await api.get('/registration/cms/admin/management/progress')
+    return await api.get('/registration/cms/progress')
   } catch (err) {
-    console.error('Lỗi:', err.message)
+    console.error('Lỗi khi lấy danh sách tiến trình thực tập:', err.message)
     throw err
   }
 }
