@@ -5,6 +5,9 @@
       <div v-if="text_error" class="text-error">
         {{ text_error }}
       </div>
+      <div v-if="text_success" class="text-success">
+        {{ text_success }}
+      </div>
       <form class="login-form" @submit.prevent="changePassword">
         <p>Mật khẩu hiện tại</p>
         <div class="input-group">
@@ -60,7 +63,7 @@
           </div>
         </div>
 
-        <button type="submit" class="login-button">
+        <button type="submit" class="login-button" :disabled="loading">
           <div class="button-content">
             <span v-if="loading" class="spinner-border spinner-border-sm"></span>
             <span v-else class="fw-bold">Đổi mật khẩu</span>
@@ -70,10 +73,11 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref } from 'vue'
-import { validEmail, validPhone, emoji } from '@/utils/validators.js'
-import { useAuthStore } from '@/stores/authStore.js'
+import { emoji } from '@/utils/validators.js'
+import { changePassword as apiChangePassword } from '@/services/authService.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -82,11 +86,11 @@ const showCurrentPassword = ref(false)
 const showNewPassword = ref(false)
 const showNewRepeatPassword = ref(false)
 const text_error = ref('')
-const authStore = useAuthStore()
+const text_success = ref('')
 const loading = ref(false)
-const currentPassword = ref(null)
-const newPassword = ref(null)
-const newRepeatPassword = ref(null)
+const currentPassword = ref('')
+const newPassword = ref('')
+const newRepeatPassword = ref('')
 
 const changeShowCurrentPassword = () => {
   showCurrentPassword.value = !showCurrentPassword.value
@@ -100,8 +104,17 @@ const changeShowNewRepeatPassword = () => {
   showNewRepeatPassword.value = !showNewRepeatPassword.value
 }
 
+const clearMessages = () => {
+  text_error.value = ''
+  text_success.value = ''
+}
+
 const changePassword = async () => {
   if (loading.value) return
+
+  clearMessages()
+
+  // Validation
   if (!currentPassword.value || !newPassword.value || !newRepeatPassword.value) {
     text_error.value = 'Vui lòng nhập đầy đủ thông tin'
     return
@@ -127,26 +140,43 @@ const changePassword = async () => {
     return
   }
 
+  // Match API expected payload structure
   const payload = {
     currentPassword: currentPassword.value,
     newPassword: newPassword.value,
-    newRepeatPassword: newRepeatPassword.value,
+    confirmPassword: newRepeatPassword.value, // API expects confirmPassword, not newRepeatPassword
   }
 
   loading.value = true
   try {
-    await authStore.login(payload)
-    // const userStore = useUserStore()
-    // await userStore.fetchUser()
-    await router.push('/')
-  } catch (err) {
-    text_error.value = err
+    await apiChangePassword(payload)
+    text_success.value = 'Đổi mật khẩu thành công!'
+
+    // Clear form
+    currentPassword.value = ''
+    newPassword.value = ''
+    newRepeatPassword.value = ''
+
+    // Optional: redirect after success
+    setTimeout(() => {
+      router.push('/')
+    }, 2000)
+  } catch (error) {
+    // Handle different error types
+    if (error.response?.data?.message) {
+      text_error.value = error.response.data.message
+    } else if (error.message) {
+      text_error.value = error.message
+    } else {
+      text_error.value = 'Có lỗi xảy ra khi đổi mật khẩu'
+    }
   } finally {
     loading.value = false
   }
 }
 </script>
-<style>
+
+<style scoped>
 .container {
   margin: 1.5rem auto;
   display: flex;
@@ -174,6 +204,12 @@ const changePassword = async () => {
 
 .text-error {
   color: red;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.text-success {
+  color: green;
   margin-bottom: 1rem;
   font-size: 0.9rem;
 }
@@ -227,8 +263,13 @@ const changePassword = async () => {
   transition: background-color 0.3s;
 }
 
-.login-button:hover {
+.login-button:hover:not(:disabled) {
   background-color: #a61b2d;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .button-content {

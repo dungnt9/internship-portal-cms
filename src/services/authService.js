@@ -9,24 +9,6 @@ export const apiLogin = async (payload) => {
   }
 }
 
-export const verifyOtp = async (payload) => {
-  try {
-    return await api.post('/auth/verify-otp', payload)
-  } catch (err) {
-    console.error('Lỗi xác thực OTP:', err.message)
-    throw err
-  }
-}
-
-export const resetPassword = async (payload) => {
-  try {
-    return await api.post('/auth/reset-password', payload)
-  } catch (err) {
-    console.error('Lỗi đặt lại mật khẩu:', err.message)
-    throw err
-  }
-}
-
 export const changePassword = async (payload) => {
   try {
     return await api.post('/auth/change-password', payload)
