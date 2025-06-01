@@ -10,9 +10,7 @@
     </div>
     <div class="menu">
       <div v-if="authStore.isAuthenticated" class="list-category">
-        <div
-          class="dropdown-container"
-        >
+        <div class="dropdown-container">
           <p class="category">Quản lý người dùng</p>
           <div class="dropdown-wrapper-1" @click.stop>
             <Dropdown
@@ -26,9 +24,7 @@
             />
           </div>
         </div>
-        <div
-          class="dropdown-container"
-        >
+        <div class="dropdown-container">
           <p class="category">Quản lý đăng ký thực tập</p>
           <div class="dropdown-wrapper-1" @click.stop>
             <Dropdown
@@ -36,14 +32,12 @@
                 { label: 'Nguyện vọng thực tập', route: '/internship-application' },
                 { label: 'Kỳ thực tập', route: '/internship-period' },
                 { label: 'Thực tập đơn vị chưa liên kết', route: '/external-internship' },
-                { label: 'Quá trình thực tập', route: '/internship-progress' }
+                { label: 'Quá trình thực tập', route: '/internship-progress' },
               ]"
             />
           </div>
         </div>
-        <div
-          class="dropdown-container"
-        >
+        <div class="dropdown-container">
           <p class="category">Quản lý đánh giá thực tập</p>
           <div class="dropdown-wrapper-1" @click.stop>
             <Dropdown
@@ -57,7 +51,6 @@
       </div>
 
       <div v-if="authStore.isAuthenticated" class="info">
-        <img src="/images/header/bell.svg" alt="bell" class="bell" />
         <div class="dropdown-container">
           <img src="/images/header/user.png" alt="user" class="user" />
           <div class="dropdown-wrapper">
