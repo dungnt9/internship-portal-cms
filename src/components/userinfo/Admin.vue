@@ -428,8 +428,8 @@ p {
 }
 
 .profile-image {
-  width: auto;
-  height: 100%;
+  width: 107px;
+  height: 107px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
