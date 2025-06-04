@@ -16,9 +16,7 @@
           clearable
           @update:model-value="applyFilters"
         ></v-select>
-        <v-btn color="primary" class="ml-4" @click="openAddModal">
-          Thêm Báo cáo mới
-        </v-btn>
+        <v-btn color="primary" class="ml-4" @click="openAddModal"> Thêm Báo cáo mới </v-btn>
       </v-card-title>
 
       <!-- Bảng dữ liệu với lọc -->
@@ -40,7 +38,12 @@
           <tr>
             <th v-for="column in columns" :key="`filter-${column.key}`" :class="column.class">
               <v-text-field
-                v-if="column.key !== 'actions' && column.key !== 'filePath' && column.key !== 'isEditable' && column.key !== 'isExternal'"
+                v-if="
+                  column.key !== 'actions' &&
+                  column.key !== 'filePath' &&
+                  column.key !== 'isEditable' &&
+                  column.key !== 'isExternal'
+                "
                 v-model="filters[column.key]"
                 hide-details
                 density="compact"
@@ -75,11 +78,7 @@
 
         <!-- Slot cho cột loại thực tập -->
         <template v-slot:item.isExternal="{ item }">
-          <v-chip
-            :color="item.isExternal ? 'orange' : 'blue'"
-            text-color="white"
-            size="small"
-          >
+          <v-chip :color="item.isExternal ? 'orange' : 'blue'" text-color="white" size="small">
             {{ item.isExternal ? 'Ngoài trường' : 'Trong trường' }}
           </v-chip>
         </template>
@@ -101,11 +100,7 @@
 
         <!-- Slot cho trạng thái có thể chỉnh sửa -->
         <template v-slot:item.isEditable="{ item }">
-          <v-chip
-            :color="item.isEditable ? 'orange' : 'green'"
-            text-color="white"
-            size="small"
-          >
+          <v-chip :color="item.isEditable ? 'orange' : 'green'" text-color="white" size="small">
             {{ item.isEditable ? 'Có thể sửa' : 'Đã nộp' }}
           </v-chip>
         </template>
@@ -115,48 +110,16 @@
           {{ item.submissionDate ? formatDate(item.submissionDate) : 'Chưa nộp' }}
         </template>
 
-        <!-- Slot cho cột ngày tạo -->
-        <template v-slot:item.createdAt="{ item }">
-          {{ formatDate(item.createdAt) }}
-        </template>
-
-        <!-- Slot cho cột ngày cập nhật -->
-        <template v-slot:item.updatedAt="{ item }">
-          {{ formatDate(item.updatedAt) }}
-        </template>
-
         <!-- Slot cho cột thao tác -->
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            size="small"
-            class="mr-2"
-            @click="openViewModal(item)"
-          >
-            mdi-eye
-          </v-icon>
-          <v-icon
-            size="small"
-            class="mr-2"
-            color="blue"
-            @click="openEditModal(item)"
-          >
+          <v-icon size="small" class="mr-2" @click="openViewModal(item)"> mdi-eye </v-icon>
+          <v-icon size="small" class="mr-2" color="blue" @click="openEditModal(item)">
             mdi-pencil
           </v-icon>
-          <v-icon
-            size="small"
-            class="mr-2"
-            color="orange"
-            @click="openUploadModal(item)"
-          >
+          <v-icon size="small" class="mr-2" color="orange" @click="openUploadModal(item)">
             mdi-file-upload
           </v-icon>
-          <v-icon
-            size="small"
-            color="error"
-            @click="deleteReport(item)"
-          >
-            mdi-delete
-          </v-icon>
+          <v-icon size="small" color="error" @click="deleteReport(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -183,7 +146,7 @@
                 item-value="id"
                 label="Chọn tiến trình thực tập"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng chọn tiến trình thực tập']"
+                :rules="[(v) => !!v || 'Vui lòng chọn tiến trình thực tập']"
                 required
                 @update:model-value="onProgressChange"
               ></v-autocomplete>
@@ -247,7 +210,7 @@
                 v-model="editedItem.title"
                 label="Tiêu đề báo cáo"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng nhập tiêu đề báo cáo']"
+                :rules="[(v) => !!v || 'Vui lòng nhập tiêu đề báo cáo']"
                 required
               ></v-text-field>
             </v-col>
@@ -257,7 +220,7 @@
                 v-model="editedItem.content"
                 label="Nội dung báo cáo"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng nhập nội dung báo cáo']"
+                :rules="[(v) => !!v || 'Vui lòng nhập nội dung báo cáo']"
                 required
                 rows="10"
                 auto-grow
@@ -307,22 +270,6 @@
                   variant="outlined"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  :model-value="formatDate(editedItem.createdAt)"
-                  label="Ngày tạo"
-                  readonly
-                  variant="outlined"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  :model-value="formatDate(editedItem.updatedAt)"
-                  label="Ngày cập nhật"
-                  readonly
-                  variant="outlined"
-                ></v-text-field>
-              </v-col>
             </template>
           </v-row>
         </v-container>
@@ -344,7 +291,7 @@
               label="File báo cáo mới (PDF, DOC, DOCX)"
               accept=".pdf,.doc,.docx"
               prepend-icon="mdi-file-document"
-              :rules="[v => !!v || 'Vui lòng chọn file']"
+              :rules="[(v) => !!v || 'Vui lòng chọn file']"
               required
               show-size
             ></v-file-input>
@@ -361,9 +308,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="text" @click="confirmDialog = false">Hủy</v-btn>
-          <v-btn color="error" variant="flat" @click="confirmExecute">
-            Xác nhận
-          </v-btn>
+          <v-btn color="error" variant="flat" @click="confirmExecute"> Xác nhận </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -378,7 +323,7 @@ import {
   createInternshipReport,
   updateInternshipReport,
   uploadReportFile,
-  deleteInternshipReport
+  deleteInternshipReport,
 } from '@/services/evaluationService'
 import { getInternshipProgress, getInternshipPeriods } from '@/services/registrationService'
 import TeleportModal from '@/components/TeleportModal.vue'
@@ -415,19 +360,19 @@ const filters = reactive({
   positionTitle: '',
   title: '',
   isExternal: null,
-  submitted: null
+  submitted: null,
 })
 
 const submittedOptions = [
   { title: 'Tất cả', value: null },
   { title: 'Đã nộp', value: false },
-  { title: 'Chưa nộp', value: true }
+  { title: 'Chưa nộp', value: true },
 ]
 
 const externalOptions = [
   { title: 'Tất cả', value: null },
   { title: 'Trong trường', value: false },
-  { title: 'Ngoài trường', value: true }
+  { title: 'Ngoài trường', value: true },
 ]
 
 const defaultItem = {
@@ -452,10 +397,10 @@ const defaultItem = {
   endDate: '',
   isExternal: null,
   createdAt: null,
-  updatedAt: null
+  updatedAt: null,
 }
 
-const editedItem = reactive({...defaultItem})
+const editedItem = reactive({ ...defaultItem })
 
 const headers = [
   { title: 'ID', key: 'id', sortable: true },
@@ -469,8 +414,7 @@ const headers = [
   { title: 'File', key: 'filePath', sortable: false },
   { title: 'Trạng thái', key: 'isEditable', sortable: true },
   { title: 'Ngày nộp', key: 'submissionDate', sortable: true },
-  { title: 'Ngày tạo', key: 'createdAt', sortable: true },
-  { title: 'Thao tác', key: 'actions', sortable: false }
+  { title: 'Thao tác', key: 'actions', sortable: false },
 ]
 
 const modalTitle = computed(() => {
@@ -480,8 +424,8 @@ const modalTitle = computed(() => {
 
 // Computed property để lọc dữ liệu
 const filteredItems = computed(() => {
-  return reports.value.filter(item => {
-    return Object.keys(filters).every(key => {
+  return reports.value.filter((item) => {
+    return Object.keys(filters).every((key) => {
       if (!filters[key] && filters[key] !== false && filters[key] !== 0) return true
 
       if (key === 'isExternal' || key === 'submitted') {
@@ -526,7 +470,7 @@ const fetchReports = async () => {
       periodId: selectedPeriod.value,
       studentName: filters.studentName || null,
       companyName: filters.companyName || null,
-      submitted: filters.submitted
+      submitted: filters.submitted,
     }
 
     const response = await getInternshipReports(filterParams)
@@ -542,9 +486,9 @@ const fetchReports = async () => {
 const fetchPeriods = async () => {
   try {
     const response = await getInternshipPeriods()
-    periods.value = response.data.map(period => ({
+    periods.value = response.data.map((period) => ({
       ...period,
-      displayName: `${period.id} - ${period.description || ''}`
+      displayName: `${period.id} - ${period.description || ''}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách kỳ thực tập:', error)
@@ -556,13 +500,13 @@ const fetchAvailableProgress = async () => {
   try {
     const response = await getInternshipProgress()
     // Filter progress that don't have reports yet
-    const existingProgressIds = reports.value.map(report => report.progressId)
+    const existingProgressIds = reports.value.map((report) => report.progressId)
 
     availableProgress.value = response.data
-      .filter(progress => !existingProgressIds.includes(progress.id))
-      .map(progress => ({
+      .filter((progress) => !existingProgressIds.includes(progress.id))
+      .map((progress) => ({
         id: progress.id,
-        displayName: `${progress.studentCode} - ${progress.studentName} (${progress.periodId})`
+        displayName: `${progress.studentCode} - ${progress.studentName} (${progress.periodId})`,
       }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách tiến trình thực tập:', error)
@@ -630,7 +574,7 @@ const onProgressChange = async (progressId) => {
   try {
     // Fetch progress details to populate student and internship info
     const progressResponse = await getInternshipProgress()
-    const selectedProgress = progressResponse.data.find(p => p.id === progressId)
+    const selectedProgress = progressResponse.data.find((p) => p.id === progressId)
 
     if (selectedProgress) {
       editedItem.studentId = selectedProgress.studentId
@@ -662,7 +606,7 @@ const save = async () => {
       const reportData = {
         progressId: editedItem.progressId,
         title: editedItem.title,
-        content: editedItem.content
+        content: editedItem.content,
       }
       formData.append('data', new Blob([JSON.stringify(reportData)], { type: 'application/json' }))
 
@@ -676,7 +620,7 @@ const save = async () => {
       // Update existing report
       const updateData = {
         title: editedItem.title,
-        content: editedItem.content
+        content: editedItem.content,
       }
 
       await updateInternshipReport(editedItem.id, updateData)
@@ -688,7 +632,6 @@ const save = async () => {
     reportFile.value = null
 
     console.log('Lưu báo cáo thành công!')
-
   } catch (error) {
     console.error('Lỗi khi lưu báo cáo:', error)
     alert('Có lỗi xảy ra khi lưu báo cáo. Vui lòng thử lại!')
@@ -709,7 +652,6 @@ const updateFile = async () => {
     uploadFile.value = null
 
     console.log('Cập nhật file thành công!')
-
   } catch (error) {
     console.error('Lỗi khi cập nhật file:', error)
     alert('Có lỗi xảy ra khi cập nhật file. Vui lòng thử lại!')

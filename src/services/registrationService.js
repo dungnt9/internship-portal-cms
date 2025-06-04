@@ -14,8 +14,8 @@ export const createExternalInternship = async (formData) => {
   try {
     return await api.post('/registration/cms/external-internships', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     })
   } catch (err) {
     console.error('Lỗi:', err.message)
@@ -36,11 +36,15 @@ export const updateExternalInternshipFile = async (id, file) => {
   try {
     const formData = new FormData()
     formData.append('confirmationFile', file)
-    return await api.put(`/registration/cms/external-internships/${id}/confirmation-file`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    return await api.put(
+      `/registration/cms/external-internships/${id}/confirmation-file`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
   } catch (err) {
     console.error('Lỗi:', err.message)
     throw err
@@ -159,11 +163,15 @@ export const createInternshipApplication = async (applicationData) => {
 
 export const createInternshipApplicationWithCV = async (formData) => {
   try {
-    return await api.post('/registration/cms/admin/management/applications/create-with-cv', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    return await api.post(
+      '/registration/cms/admin/management/applications/create-with-cv',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
   } catch (err) {
     console.error('Lỗi:', err.message)
     throw err
@@ -192,11 +200,15 @@ export const uploadApplicationCV = async (id, file) => {
   try {
     const formData = new FormData()
     formData.append('cvFile', file)
-    return await api.post(`/registration/cms/admin/management/applications/${id}/upload-cv`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    return await api.post(
+      `/registration/cms/admin/management/applications/${id}/upload-cv`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
   } catch (err) {
     console.error('Lỗi upload CV:', err.message)
     console.error('Error details:', err.response?.data)
@@ -207,7 +219,9 @@ export const uploadApplicationCV = async (id, file) => {
 // Application Detail APIs
 export const getApplicationDetails = async (applicationId) => {
   try {
-    return await api.get(`/registration/cms/admin/management/application-details/application/${applicationId}`)
+    return await api.get(
+      `/registration/cms/admin/management/application-details/application/${applicationId}`,
+    )
   } catch (err) {
     console.error('Lỗi:', err.message)
     throw err
@@ -289,7 +303,7 @@ export const getInternshipPositionsByCompany = async (companyId) => {
 
 export const getInternshipProgress = async () => {
   try {
-    return await api.get('/registration/cms/progress')
+    return await api.get('/registration/cms/admin/management/progress')
   } catch (err) {
     console.error('Lỗi khi lấy danh sách tiến trình thực tập:', err.message)
     throw err

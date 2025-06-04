@@ -16,9 +16,7 @@
           clearable
           @update:model-value="fetchProgress"
         ></v-select>
-        <v-btn color="primary" class="ml-4" @click="openAddModal">
-          Thêm Tiến trình mới
-        </v-btn>
+        <v-btn color="primary" class="ml-4" @click="openAddModal"> Thêm Tiến trình mới </v-btn>
       </v-card-title>
 
       <!-- Bảng dữ liệu với lọc -->
@@ -40,7 +38,12 @@
           <tr>
             <th v-for="column in columns" :key="`filter-${column.key}`" :class="column.class">
               <v-text-field
-                v-if="column.key !== 'actions' && column.key !== 'status' && column.key !== 'isExternal' && column.key !== 'teacherConfirmed'"
+                v-if="
+                  column.key !== 'actions' &&
+                  column.key !== 'status' &&
+                  column.key !== 'isExternal' &&
+                  column.key !== 'teacherConfirmed'
+                "
                 v-model="filters[column.key]"
                 hide-details
                 density="compact"
@@ -81,11 +84,7 @@
 
         <!-- Slot cho cột loại thực tập -->
         <template v-slot:item.isExternal="{ item }">
-          <v-chip
-            :color="item.isExternal ? 'orange' : 'blue'"
-            text-color="white"
-            size="small"
-          >
+          <v-chip :color="item.isExternal ? 'orange' : 'blue'" text-color="white" size="small">
             {{ item.isExternal ? 'Ngoài trường' : 'Trong trường' }}
           </v-chip>
         </template>
@@ -97,51 +96,22 @@
 
         <!-- Slot cho cột trạng thái -->
         <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="getStatusColor(item.status)"
-            text-color="white"
-            size="small"
-          >
+          <v-chip :color="getStatusColor(item.status)" text-color="white" size="small">
             {{ getStatusText(item.status) }}
           </v-chip>
         </template>
 
         <!-- Slot cho xác nhận giảng viên -->
         <template v-slot:item.teacherConfirmed="{ item }">
-          <v-chip
-            :color="item.teacherConfirmed ? 'green' : 'grey'"
-            text-color="white"
-            size="small"
-          >
+          <v-chip :color="item.teacherConfirmed ? 'green' : 'grey'" text-color="white" size="small">
             {{ item.teacherConfirmed ? 'Đã xác nhận' : 'Chưa xác nhận' }}
           </v-chip>
         </template>
 
-        <!-- Slot cho cột ngày tạo -->
-        <template v-slot:item.createdAt="{ item }">
-          {{ formatDate(item.createdAt) }}
-        </template>
-
-        <!-- Slot cho cột ngày cập nhật -->
-        <template v-slot:item.updatedAt="{ item }">
-          {{ formatDate(item.updatedAt) }}
-        </template>
-
         <!-- Slot cho cột thao tác -->
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            size="small"
-            class="mr-2"
-            @click="openViewModal(item)"
-          >
-            mdi-eye
-          </v-icon>
-          <v-icon
-            size="small"
-            class="mr-2"
-            color="blue"
-            @click="openEditModal(item)"
-          >
+          <v-icon size="small" class="mr-2" @click="openViewModal(item)"> mdi-eye </v-icon>
+          <v-icon size="small" class="mr-2" color="blue" @click="openEditModal(item)">
             mdi-pencil
           </v-icon>
           <v-icon
@@ -153,13 +123,7 @@
           >
             mdi-check-circle
           </v-icon>
-          <v-icon
-            size="small"
-            color="error"
-            @click="deleteProgress(item)"
-          >
-            mdi-delete
-          </v-icon>
+          <v-icon size="small" color="error" @click="deleteProgress(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -185,7 +149,7 @@
                 item-value="id"
                 label="Sinh viên"
                 :readonly="dialogView || editedIndex > -1"
-                :rules="[v => !!v || 'Vui lòng chọn sinh viên']"
+                :rules="[(v) => !!v || 'Vui lòng chọn sinh viên']"
                 required
               ></v-autocomplete>
             </v-col>
@@ -197,7 +161,7 @@
                 item-value="id"
                 label="Kỳ thực tập"
                 :readonly="dialogView || editedIndex > -1"
-                :rules="[v => !!v || 'Vui lòng chọn kỳ thực tập']"
+                :rules="[(v) => !!v || 'Vui lòng chọn kỳ thực tập']"
                 required
                 @update:model-value="onPeriodChange"
               ></v-select>
@@ -211,7 +175,7 @@
                 item-value="id"
                 label="Giảng viên hướng dẫn"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng chọn giảng viên']"
+                :rules="[(v) => !!v || 'Vui lòng chọn giảng viên']"
                 required
               ></v-select>
             </v-col>
@@ -235,7 +199,7 @@
                   item-value="id"
                   label="Công ty"
                   :readonly="dialogView || editedIndex > -1"
-                  :rules="[v => !!v || 'Vui lòng chọn công ty']"
+                  :rules="[(v) => !!v || 'Vui lòng chọn công ty']"
                   required
                   @update:model-value="onCompanyChange"
                 ></v-select>
@@ -249,7 +213,7 @@
                   item-value="id"
                   label="Vị trí thực tập"
                   :readonly="dialogView || editedIndex > -1"
-                  :rules="[v => !!v || 'Vui lòng chọn vị trí thực tập']"
+                  :rules="[(v) => !!v || 'Vui lòng chọn vị trí thực tập']"
                   required
                   :disabled="!editedItem.selectedCompanyId || !editedItem.periodId"
                 ></v-autocomplete>
@@ -263,7 +227,7 @@
                   v-model="editedItem.companyName"
                   label="Tên công ty"
                   :readonly="dialogView"
-                  :rules="[v => !!v || 'Vui lòng nhập tên công ty']"
+                  :rules="[(v) => !!v || 'Vui lòng nhập tên công ty']"
                   required
                 ></v-text-field>
               </v-col>
@@ -272,7 +236,7 @@
                   v-model="editedItem.positionTitle"
                   label="Tên vị trí"
                   :readonly="dialogView"
-                  :rules="[v => !!v || 'Vui lòng nhập tên vị trí']"
+                  :rules="[(v) => !!v || 'Vui lòng nhập tên vị trí']"
                   required
                 ></v-text-field>
               </v-col>
@@ -284,7 +248,7 @@
                 label="Ngày bắt đầu"
                 type="date"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng chọn ngày bắt đầu']"
+                :rules="[(v) => !!v || 'Vui lòng chọn ngày bắt đầu']"
                 required
               ></v-text-field>
             </v-col>
@@ -294,7 +258,7 @@
                 label="Ngày kết thúc"
                 type="date"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng chọn ngày kết thúc']"
+                :rules="[(v) => !!v || 'Vui lòng chọn ngày kết thúc']"
                 required
               ></v-text-field>
             </v-col>
@@ -306,7 +270,7 @@
                 item-value="value"
                 label="Trạng thái"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng chọn trạng thái']"
+                :rules="[(v) => !!v || 'Vui lòng chọn trạng thái']"
                 required
               ></v-select>
             </v-col>
@@ -368,20 +332,6 @@
                   readonly
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  :model-value="formatDate(editedItem.createdAt)"
-                  label="Ngày tạo"
-                  readonly
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  :model-value="formatDate(editedItem.updatedAt)"
-                  label="Ngày cập nhật"
-                  readonly
-                ></v-text-field>
-              </v-col>
             </template>
           </v-row>
         </v-container>
@@ -417,8 +367,8 @@ import {
   createInternshipProgress,
   updateInternshipProgress,
   deleteInternshipProgressById,
-  getInternshipPeriods,
-  getInternshipPositions
+  getAdminInternshipPeriods,
+  getInternshipPositions,
 } from '@/services/registrationService'
 import { getStudents, getTeachers, getAllCompanies } from '@/services/userService'
 import TeleportModal from '@/components/TeleportModal.vue'
@@ -461,32 +411,32 @@ const filters = reactive({
   positionTitle: '',
   status: null,
   isExternal: null,
-  teacherConfirmed: null
+  teacherConfirmed: null,
 })
 
 const statusOptions = [
   { title: 'Tất cả', value: null },
   { title: 'Đang tiến hành', value: 'IN_PROGRESS' },
   { title: 'Hoàn thành', value: 'COMPLETED' },
-  { title: 'Đã hủy', value: 'CANCELLED' }
+  { title: 'Đã hủy', value: 'CANCELLED' },
 ]
 
 const externalOptions = [
   { title: 'Tất cả', value: null },
   { title: 'Trong trường', value: false },
-  { title: 'Ngoài trường', value: true }
+  { title: 'Ngoài trường', value: true },
 ]
 
 const confirmedOptions = [
   { title: 'Tất cả', value: null },
   { title: 'Đã xác nhận', value: true },
-  { title: 'Chưa xác nhận', value: false }
+  { title: 'Chưa xác nhận', value: false },
 ]
 
 const statusItems = [
   { text: 'Đang tiến hành', value: 'IN_PROGRESS' },
   { text: 'Hoàn thành', value: 'COMPLETED' },
-  { text: 'Đã hủy', value: 'CANCELLED' }
+  { text: 'Đã hủy', value: 'CANCELLED' },
 ]
 
 const defaultItem = {
@@ -507,10 +457,10 @@ const defaultItem = {
   supervisorPosition: '',
   supervisorEmail: '',
   supervisorPhone: '',
-  teacherConfirmed: false
+  teacherConfirmed: false,
 }
 
-const editedItem = reactive({...defaultItem})
+const editedItem = reactive({ ...defaultItem })
 
 const headers = [
   { title: 'ID', key: 'id', sortable: true },
@@ -524,8 +474,7 @@ const headers = [
   { title: 'Vị trí', key: 'positionTitle', sortable: true },
   { title: 'Trạng thái', key: 'status', sortable: true },
   { title: 'Xác nhận GV', key: 'teacherConfirmed', sortable: true },
-  { title: 'Ngày tạo', key: 'createdAt', sortable: true },
-  { title: 'Thao tác', key: 'actions', sortable: false }
+  { title: 'Thao tác', key: 'actions', sortable: false },
 ]
 
 const modalTitle = computed(() => {
@@ -536,9 +485,9 @@ const modalTitle = computed(() => {
 // Get status color
 const getStatusColor = (status) => {
   const colors = {
-    'IN_PROGRESS': 'blue',
-    'COMPLETED': 'green',
-    'CANCELLED': 'red'
+    IN_PROGRESS: 'blue',
+    COMPLETED: 'green',
+    CANCELLED: 'red',
   }
   return colors[status] || 'grey'
 }
@@ -546,9 +495,9 @@ const getStatusColor = (status) => {
 // Get status text
 const getStatusText = (status) => {
   const texts = {
-    'IN_PROGRESS': 'Đang tiến hành',
-    'COMPLETED': 'Hoàn thành',
-    'CANCELLED': 'Đã hủy'
+    IN_PROGRESS: 'Đang tiến hành',
+    COMPLETED: 'Hoàn thành',
+    CANCELLED: 'Đã hủy',
   }
   return texts[status] || status
 }
@@ -562,8 +511,8 @@ const formatDate = (dateString) => {
 
 // Computed property để lọc dữ liệu
 const filteredItems = computed(() => {
-  return progressList.value.filter(item => {
-    return Object.keys(filters).every(key => {
+  return progressList.value.filter((item) => {
+    return Object.keys(filters).every((key) => {
       if (!filters[key] && filters[key] !== false && filters[key] !== 0) return true
 
       if (key === 'status' || key === 'isExternal' || key === 'teacherConfirmed') {
@@ -599,9 +548,9 @@ const fetchStudents = async () => {
   loadingStudents.value = true
   try {
     const response = await getStudents()
-    students.value = response.data.map(student => ({
+    students.value = response.data.map((student) => ({
       ...student,
-      displayName: `${student.studentCode} - ${student.name}`
+      displayName: `${student.studentCode} - ${student.name}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách sinh viên:', error)
@@ -614,9 +563,9 @@ const fetchTeachers = async () => {
   loadingTeachers.value = true
   try {
     const response = await getTeachers()
-    teachers.value = response.data.map(teacher => ({
+    teachers.value = response.data.map((teacher) => ({
       ...teacher,
-      displayName: `${teacher.name} - ${teacher.department || ''}`
+      displayName: `${teacher.name} - ${teacher.department || ''}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách giảng viên:', error)
@@ -627,10 +576,10 @@ const fetchTeachers = async () => {
 
 const fetchPeriods = async () => {
   try {
-    const response = await getInternshipPeriods()
-    periods.value = response.data.map(period => ({
+    const response = await getAdminInternshipPeriods()
+    periods.value = response.data.map((period) => ({
       ...period,
-      displayName: `${period.id} - ${period.description || ''}`
+      displayName: `${period.id} - ${period.description || ''}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách kỳ thực tập:', error)
@@ -641,9 +590,9 @@ const fetchPositions = async () => {
   loadingPositions.value = true
   try {
     const response = await getInternshipPositions()
-    positions.value = response.data.map(position => ({
+    positions.value = response.data.map((position) => ({
       ...position,
-      displayName: `${position.title} - ${position.companyName}`
+      displayName: `${position.title} - ${position.companyName}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách vị trí thực tập:', error)
@@ -701,9 +650,11 @@ const updateFilteredPositions = () => {
   }
 
   // Filter positions by selected company and period
-  filteredPositions.value = positions.value.filter(position => {
-    return position.companyId === editedItem.selectedCompanyId &&
+  filteredPositions.value = positions.value.filter((position) => {
+    return (
+      position.companyId === editedItem.selectedCompanyId &&
       position.periodId === editedItem.periodId
+    )
   })
 }
 
@@ -720,7 +671,7 @@ const openViewModal = (item) => {
 
   // Set selectedCompanyId for internal internships
   if (!item.isExternal && item.positionId) {
-    const position = positions.value.find(p => p.id === item.positionId)
+    const position = positions.value.find((p) => p.id === item.positionId)
     if (position) {
       editedItem.selectedCompanyId = position.companyId
       updateFilteredPositions()
@@ -737,7 +688,7 @@ const openEditModal = (item) => {
 
   // Set selectedCompanyId for internal internships
   if (!item.isExternal && item.positionId) {
-    const position = positions.value.find(p => p.id === item.positionId)
+    const position = positions.value.find((p) => p.id === item.positionId)
     if (position) {
       editedItem.selectedCompanyId = position.companyId
       updateFilteredPositions()
@@ -806,7 +757,7 @@ const save = async () => {
         supervisorPosition: editedItem.supervisorPosition,
         supervisorEmail: editedItem.supervisorEmail,
         supervisorPhone: editedItem.supervisorPhone,
-        teacherConfirmed: editedItem.teacherConfirmed
+        teacherConfirmed: editedItem.teacherConfirmed,
       }
 
       const response = await createInternshipProgress(data)
@@ -824,7 +775,7 @@ const save = async () => {
         supervisorPosition: editedItem.supervisorPosition,
         supervisorEmail: editedItem.supervisorEmail,
         supervisorPhone: editedItem.supervisorPhone,
-        teacherConfirmed: editedItem.teacherConfirmed
+        teacherConfirmed: editedItem.teacherConfirmed,
       }
 
       // Only add external fields if this is an external internship

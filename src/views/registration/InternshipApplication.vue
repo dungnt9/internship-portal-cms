@@ -22,7 +22,11 @@
           <tr>
             <th v-for="column in columns" :key="`filter-${column.key}`">
               <v-text-field
-                v-if="column.key !== 'actions' && column.key !== 'cvFilePath' && column.key !== 'detailsCount'"
+                v-if="
+                  column.key !== 'actions' &&
+                  column.key !== 'cvFilePath' &&
+                  column.key !== 'detailsCount'
+                "
                 v-model="filters[column.key]"
                 hide-details
                 density="compact"
@@ -70,8 +74,12 @@
         <!-- Actions column -->
         <template v-slot:item.actions="{ item }">
           <v-icon size="small" class="mr-2" @click="openViewModal(item)">mdi-eye</v-icon>
-          <v-icon size="small" class="mr-2" color="orange" @click="openUploadModal(item)">mdi-file-upload</v-icon>
-          <v-icon size="small" class="mr-2" color="purple" @click="openDetailsModal(item)">mdi-format-list-bulleted</v-icon>
+          <v-icon size="small" class="mr-2" color="orange" @click="openUploadModal(item)"
+            >mdi-file-upload</v-icon
+          >
+          <v-icon size="small" class="mr-2" color="purple" @click="openDetailsModal(item)"
+            >mdi-format-list-bulleted</v-icon
+          >
           <v-icon size="small" color="error" @click="deleteApplication(item)">mdi-delete</v-icon>
         </template>
       </v-data-table>
@@ -97,7 +105,7 @@
                 item-value="id"
                 label="Sinh viên"
                 :readonly="dialogView"
-                :rules="dialogView ? [] : [v => !!v || 'Vui lòng chọn sinh viên']"
+                :rules="dialogView ? [] : [(v) => !!v || 'Vui lòng chọn sinh viên']"
                 :required="!dialogView"
               ></v-autocomplete>
             </v-col>
@@ -109,7 +117,7 @@
                 item-value="id"
                 label="Kỳ thực tập"
                 :readonly="dialogView"
-                :rules="dialogView ? [] : [v => !!v || 'Vui lòng chọn kỳ thực tập']"
+                :rules="dialogView ? [] : [(v) => !!v || 'Vui lòng chọn kỳ thực tập']"
                 :required="!dialogView"
               ></v-select>
             </v-col>
@@ -119,7 +127,7 @@
                 label="File CV (PDF)"
                 accept=".pdf"
                 prepend-icon="mdi-file-pdf-box"
-                :rules="[v => !!v || 'Vui lòng chọn file CV']"
+                :rules="[(v) => !!v || 'Vui lòng chọn file CV']"
                 required
               ></v-file-input>
             </v-col>
@@ -133,12 +141,6 @@
                 <v-icon class="mr-2">mdi-file-pdf-box</v-icon>
                 Xem CV
               </v-btn>
-            </v-col>
-            <v-col cols="12" sm="6" v-if="dialogView">
-              <v-text-field :model-value="formatDate(editedItem.createdAt)" label="Ngày tạo" readonly></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" v-if="dialogView">
-              <v-text-field :model-value="formatDate(editedItem.updatedAt)" label="Ngày cập nhật" readonly></v-text-field>
             </v-col>
           </v-row>
 
@@ -194,7 +196,7 @@
               label="File CV mới (PDF)"
               accept=".pdf"
               prepend-icon="mdi-file-pdf-box"
-              :rules="[v => !!v || 'Vui lòng chọn file CV']"
+              :rules="[(v) => !!v || 'Vui lòng chọn file CV']"
               required
             ></v-file-input>
           </v-col>
@@ -203,11 +205,7 @@
     </TeleportModal>
 
     <!-- Application Details Modal -->
-    <TeleportModal
-      v-model="showDetailsModal"
-      title="Quản lý Nguyện vọng"
-      :hide-save="true"
-    >
+    <TeleportModal v-model="showDetailsModal" title="Quản lý Nguyện vọng" :hide-save="true">
       <v-container>
         <v-row>
           <v-col cols="12">
@@ -220,12 +218,7 @@
               Thêm nguyện vọng mới
             </v-btn>
 
-            <v-alert
-              v-if="applicationDetails.length >= 3"
-              type="info"
-              variant="tonal"
-              class="mb-4"
-            >
+            <v-alert v-if="applicationDetails.length >= 3" type="info" variant="tonal" class="mb-4">
               Đã đạt tối đa 3 nguyện vọng cho đăng ký này
             </v-alert>
 
@@ -236,17 +229,15 @@
               class="elevation-1"
             >
               <template v-slot:item.status="{ item }">
-                <v-chip
-                  :color="getStatusColor(item.status)"
-                  text-color="white"
-                  size="small"
-                >
+                <v-chip :color="getStatusColor(item.status)" text-color="white" size="small">
                   {{ getStatusText(item.status) }}
                 </v-chip>
               </template>
 
               <template v-slot:item.actions="{ item }">
-                <v-icon size="small" class="mr-2" color="blue" @click="openEditDetailModal(item)">mdi-pencil</v-icon>
+                <v-icon size="small" class="mr-2" color="blue" @click="openEditDetailModal(item)"
+                  >mdi-pencil</v-icon
+                >
                 <v-icon size="small" color="error" @click="deleteDetail(item)">mdi-delete</v-icon>
               </template>
             </v-data-table>
@@ -272,7 +263,7 @@
                 item-title="displayName"
                 item-value="id"
                 label="Công ty"
-                :rules="[v => !!v || 'Vui lòng chọn công ty']"
+                :rules="[(v) => !!v || 'Vui lòng chọn công ty']"
                 required
                 @update:model-value="onCompanyChange"
               ></v-select>
@@ -285,7 +276,7 @@
                 item-title="displayName"
                 item-value="id"
                 label="Vị trí thực tập"
-                :rules="[v => !!v || 'Vui lòng chọn vị trí']"
+                :rules="[(v) => !!v || 'Vui lòng chọn vị trí']"
                 required
               ></v-select>
             </v-col>
@@ -304,16 +295,12 @@
                 item-title="title"
                 item-value="value"
                 label="Trạng thái"
-                :rules="[v => !!v || 'Vui lòng chọn trạng thái']"
+                :rules="[(v) => !!v || 'Vui lòng chọn trạng thái']"
                 required
               ></v-select>
             </v-col>
             <v-col cols="12">
-              <v-textarea
-                v-model="editedDetail.note"
-                label="Ghi chú"
-                rows="3"
-              ></v-textarea>
+              <v-textarea v-model="editedDetail.note" label="Ghi chú" rows="3"></v-textarea>
             </v-col>
           </v-row>
         </v-container>
@@ -347,14 +334,14 @@ import {
   updateApplicationDetail,
   deleteApplicationDetailById,
   getInternshipPositionsByPeriod,
-  getInternshipPeriods
+  getAdminInternshipPeriods,
 } from '@/services/registrationService'
 import { getStudents, getAllCompanies } from '@/services/userService'
 import TeleportModal from '@/components/TeleportModal.vue'
 import { viewFile as getFileViewUrl } from '@/services/fileService'
 
 const viewFile = (filePath) => {
-  const fileUrl = getFileViewUrl(filePath)  // ✅ Gọi function import
+  const fileUrl = getFileViewUrl(filePath) // ✅ Gọi function import
   window.open(fileUrl, '_blank')
 }
 
@@ -395,14 +382,14 @@ const filters = reactive({
   studentCode: '',
   studentName: '',
   studentEmail: '',
-  periodId: ''
+  periodId: '',
 })
 
 const defaultItem = {
   id: null,
   studentId: null,
   periodId: '',
-  cvFilePath: ''
+  cvFilePath: '',
 }
 
 const defaultDetail = {
@@ -411,11 +398,11 @@ const defaultDetail = {
   positionId: null,
   preferenceOrder: 1,
   status: 'PENDING',
-  note: ''
+  note: '',
 }
 
-const editedItem = reactive({...defaultItem})
-const editedDetail = reactive({...defaultDetail})
+const editedItem = reactive({ ...defaultItem })
+const editedDetail = reactive({ ...defaultDetail })
 
 // Headers
 const headers = [
@@ -426,9 +413,7 @@ const headers = [
   { title: 'Kỳ thực tập', key: 'periodId', sortable: true },
   { title: 'File CV', key: 'cvFilePath', sortable: false },
   { title: 'Nguyện vọng', key: 'detailsCount', sortable: false },
-  { title: 'Ngày tạo', key: 'createdAt', sortable: true },
-  { title: 'Ngày cập nhật', key: 'updatedAt', sortable: true },
-  { title: 'Thao tác', key: 'actions', sortable: false }
+  { title: 'Thao tác', key: 'actions', sortable: false },
 ]
 
 const detailHeaders = [
@@ -438,14 +423,14 @@ const detailHeaders = [
   { title: 'Thứ tự', key: 'preferenceOrder', sortable: true },
   { title: 'Trạng thái', key: 'status', sortable: true },
   { title: 'Ghi chú', key: 'note', sortable: false },
-  { title: 'Thao tác', key: 'actions', sortable: false }
+  { title: 'Thao tác', key: 'actions', sortable: false },
 ]
 
 const detailStatusOptions = [
   { title: 'Chờ xử lý', value: 'PENDING' },
   { title: 'Đã duyệt', value: 'APPROVED' },
   { title: 'Từ chối', value: 'REJECTED' },
-  { title: 'Đã hủy', value: 'CANCELLED' }
+  { title: 'Đã hủy', value: 'CANCELLED' },
 ]
 
 // Computed
@@ -459,8 +444,8 @@ const detailModalTitle = computed(() => {
 })
 
 const filteredItems = computed(() => {
-  return applications.value.filter(item => {
-    return Object.keys(filters).every(key => {
+  return applications.value.filter((item) => {
+    return Object.keys(filters).every((key) => {
       if (!filters[key]) return true
       const itemValue = String(item[key] || '').toLowerCase()
       const filterValue = String(filters[key]).toLowerCase()
@@ -472,20 +457,20 @@ const filteredItems = computed(() => {
 // Helper functions
 const getStatusColor = (status) => {
   const colors = {
-    'PENDING': 'orange',
-    'APPROVED': 'green',
-    'REJECTED': 'red',
-    'CANCELLED': 'grey'
+    PENDING: 'orange',
+    APPROVED: 'green',
+    REJECTED: 'red',
+    CANCELLED: 'grey',
   }
   return colors[status] || 'grey'
 }
 
 const getStatusText = (status) => {
   const texts = {
-    'PENDING': 'Chờ xử lý',
-    'APPROVED': 'Đã duyệt',
-    'REJECTED': 'Từ chối',
-    'CANCELLED': 'Đã hủy'
+    PENDING: 'Chờ xử lý',
+    APPROVED: 'Đã duyệt',
+    REJECTED: 'Từ chối',
+    CANCELLED: 'Đã hủy',
   }
   return texts[status] || status
 }
@@ -502,13 +487,13 @@ const getFilteredPositions = () => {
   }
 
   const usedPositionIds = applicationDetails.value
-    .filter(detail => detail.id !== editedDetail.id)
-    .map(detail => detail.positionId)
+    .filter((detail) => detail.id !== editedDetail.id)
+    .map((detail) => detail.positionId)
 
   return positions.value
-    .filter(position => position.companyId === selectedCompanyId.value)
-    .filter(position => position.periodId === selectedItem.value.periodId)
-    .filter(position => !usedPositionIds.includes(position.id))
+    .filter((position) => position.companyId === selectedCompanyId.value)
+    .filter((position) => position.periodId === selectedItem.value.periodId)
+    .filter((position) => !usedPositionIds.includes(position.id))
 }
 
 const onCompanyChange = () => {
@@ -532,9 +517,9 @@ const fetchStudents = async () => {
   loadingStudents.value = true
   try {
     const response = await getStudents()
-    students.value = response.data.map(student => ({
+    students.value = response.data.map((student) => ({
       ...student,
-      displayName: `${student.studentCode} - ${student.name}`
+      displayName: `${student.studentCode} - ${student.name}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách sinh viên:', error)
@@ -545,10 +530,10 @@ const fetchStudents = async () => {
 
 const fetchPeriods = async () => {
   try {
-    const response = await getInternshipPeriods()
-    periods.value = response.data.map(period => ({
+    const response = await getAdminInternshipPeriods()
+    periods.value = response.data.map((period) => ({
       ...period,
-      displayName: `${period.id} - ${period.description}`
+      displayName: `${period.id} - ${period.description}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách kỳ thực tập:', error)
@@ -558,9 +543,9 @@ const fetchPeriods = async () => {
 const fetchCompanies = async () => {
   try {
     const response = await getAllCompanies()
-    companies.value = response.data.map(company => ({
+    companies.value = response.data.map((company) => ({
       ...company,
-      displayName: company.name
+      displayName: company.name,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách công ty:', error)
@@ -570,11 +555,11 @@ const fetchCompanies = async () => {
 const fetchPositionsByPeriod = async (periodId) => {
   try {
     const response = await getInternshipPositionsByPeriod(periodId)
-    positions.value = response.data.map(position => ({
+    positions.value = response.data.map((position) => ({
       ...position,
       displayName: `${position.title}`,
       companyId: position.companyId,
-      periodId: position.periodId
+      periodId: position.periodId,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách vị trí thực tập theo period:', error)
@@ -631,7 +616,7 @@ const openAddDetailModal = () => {
   Object.assign(editedDetail, {
     ...defaultDetail,
     applicationId: selectedItem.value.id,
-    preferenceOrder: nextPreferenceOrder
+    preferenceOrder: nextPreferenceOrder,
   })
 
   fetchCompanies()
@@ -644,7 +629,7 @@ const openEditDetailModal = (item) => {
   editedDetailIndex.value = applicationDetails.value.indexOf(item)
   Object.assign(editedDetail, item)
 
-  const position = positions.value.find(p => p.id === item.positionId)
+  const position = positions.value.find((p) => p.id === item.positionId)
   selectedCompanyId.value = position ? position.companyId : null
 
   fetchCompanies()
@@ -693,7 +678,6 @@ const save = async () => {
     cvFile.value = null
 
     console.log('Tạo đăng ký thực tập thành công!')
-
   } catch (error) {
     console.error('Lỗi khi lưu dữ liệu:', error)
     alert('Có lỗi xảy ra khi tạo đăng ký. Vui lòng thử lại!')
@@ -712,7 +696,7 @@ const saveDetail = async () => {
       await updateApplicationDetail(editedDetail.id, {
         preferenceOrder: editedDetail.preferenceOrder,
         status: editedDetail.status,
-        note: editedDetail.note
+        note: editedDetail.note,
       })
     } else {
       await createApplicationDetail(editedDetail)
@@ -723,7 +707,6 @@ const saveDetail = async () => {
     Object.assign(editedDetail, defaultDetail)
 
     console.log('Lưu nguyện vọng thành công!')
-
   } catch (error) {
     console.error('Lỗi khi lưu nguyện vọng:', error)
     alert('Có lỗi xảy ra khi lưu nguyện vọng. Vui lòng thử lại!')
@@ -744,7 +727,6 @@ const updateCV = async () => {
     uploadFile.value = null
 
     console.log('Cập nhật CV thành công!')
-
   } catch (error) {
     console.error('Lỗi khi cập nhật CV:', error)
     alert('Có lỗi xảy ra khi cập nhật CV. Vui lòng thử lại!')
@@ -788,4 +770,5 @@ onMounted(() => {
 .internship-application-management {
   padding: 20px;
 }
-</style>g
+</style>
+g

@@ -4,9 +4,7 @@
       <v-card-title>
         Quản lý Kỳ thực tập
         <v-spacer></v-spacer>
-        <v-btn color="primary" class="ml-4" @click="openAddModal">
-          Thêm Kỳ thực tập mới
-        </v-btn>
+        <v-btn color="primary" class="ml-4" @click="openAddModal"> Thêm Kỳ thực tập mới </v-btn>
       </v-card-title>
 
       <!-- Bảng dữ liệu với lọc -->
@@ -50,10 +48,7 @@
 
         <!-- Slot cho cột trạng thái -->
         <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="getStatusColor(item.status)"
-            text-color="white"
-          >
+          <v-chip :color="getStatusColor(item.status)" text-color="white">
             {{ getStatusText(item.status) }}
           </v-chip>
         </template>
@@ -78,38 +73,13 @@
           {{ formatDate(item.registrationEndDate) }}
         </template>
 
-        <!-- Slot cho cột ngày tạo -->
-        <template v-slot:item.createdAt="{ item }">
-          {{ formatDateTime(item.createdAt) }}
-        </template>
-
-        <!-- Slot cho cột ngày cập nhật -->
-        <template v-slot:item.updatedAt="{ item }">
-          {{ formatDateTime(item.updatedAt) }}
-        </template>
-
         <!-- Slot cho cột thao tác -->
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            size="small"
-            class="mr-2"
-            @click="openViewModal(item)"
-          >
-            mdi-eye
-          </v-icon>
-          <v-icon
-            size="small"
-            class="mr-2"
-            color="blue"
-            @click="openEditModal(item)"
-          >
+          <v-icon size="small" class="mr-2" @click="openViewModal(item)"> mdi-eye </v-icon>
+          <v-icon size="small" class="mr-2" color="blue" @click="openEditModal(item)">
             mdi-pencil
           </v-icon>
-          <v-icon
-            size="small"
-            color="error"
-            @click="deleteInternshipPeriodConfirm(item)"
-          >
+          <v-icon size="small" color="error" @click="deleteInternshipPeriodConfirm(item)">
             mdi-delete
           </v-icon>
         </template>
@@ -132,7 +102,7 @@
                 v-model="editedItem.id"
                 label="Mã kỳ thực tập"
                 :readonly="dialogView || editedIndex > -1"
-                :rules="[v => !!v || 'Vui lòng nhập mã kỳ thực tập']"
+                :rules="[(v) => !!v || 'Vui lòng nhập mã kỳ thực tập']"
                 required
                 hint="Ví dụ: 2024.2, 2025.1"
                 persistent-hint
@@ -144,7 +114,7 @@
                 :items="statusSelectOptions"
                 label="Trạng thái"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng chọn trạng thái']"
+                :rules="[(v) => !!v || 'Vui lòng chọn trạng thái']"
                 required
               ></v-select>
             </v-col>
@@ -154,7 +124,7 @@
                 label="Ngày bắt đầu thực tập"
                 type="date"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng chọn ngày bắt đầu']"
+                :rules="[(v) => !!v || 'Vui lòng chọn ngày bắt đầu']"
                 required
               ></v-text-field>
             </v-col>
@@ -165,8 +135,11 @@
                 type="date"
                 :readonly="dialogView"
                 :rules="[
-                  v => !!v || 'Vui lòng chọn ngày kết thúc',
-                  v => !editedItem.startDate || new Date(v) > new Date(editedItem.startDate) || 'Ngày kết thúc phải sau ngày bắt đầu'
+                  (v) => !!v || 'Vui lòng chọn ngày kết thúc',
+                  (v) =>
+                    !editedItem.startDate ||
+                    new Date(v) > new Date(editedItem.startDate) ||
+                    'Ngày kết thúc phải sau ngày bắt đầu',
                 ]"
                 required
               ></v-text-field>
@@ -177,7 +150,7 @@
                 label="Ngày bắt đầu đăng ký"
                 type="date"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng chọn ngày bắt đầu đăng ký']"
+                :rules="[(v) => !!v || 'Vui lòng chọn ngày bắt đầu đăng ký']"
                 required
               ></v-text-field>
             </v-col>
@@ -188,8 +161,11 @@
                 type="date"
                 :readonly="dialogView"
                 :rules="[
-                  v => !!v || 'Vui lòng chọn ngày kết thúc đăng ký',
-                  v => !editedItem.registrationStartDate || new Date(v) > new Date(editedItem.registrationStartDate) || 'Ngày kết thúc đăng ký phải sau ngày bắt đầu đăng ký'
+                  (v) => !!v || 'Vui lòng chọn ngày kết thúc đăng ký',
+                  (v) =>
+                    !editedItem.registrationStartDate ||
+                    new Date(v) > new Date(editedItem.registrationStartDate) ||
+                    'Ngày kết thúc đăng ký phải sau ngày bắt đầu đăng ký',
                 ]"
                 required
               ></v-text-field>
@@ -199,24 +175,10 @@
                 v-model="editedItem.description"
                 label="Mô tả"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng nhập mô tả']"
+                :rules="[(v) => !!v || 'Vui lòng nhập mô tả']"
                 required
                 rows="3"
               ></v-textarea>
-            </v-col>
-            <v-col cols="12" sm="6" v-if="dialogView && editedItem.createdAt">
-              <v-text-field
-                :model-value="formatDateTime(editedItem.createdAt)"
-                label="Ngày tạo"
-                readonly
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" v-if="dialogView && editedItem.updatedAt">
-              <v-text-field
-                :model-value="formatDateTime(editedItem.updatedAt)"
-                label="Ngày cập nhật"
-                readonly
-              ></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -231,13 +193,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="text" @click="confirmDialog = false">Hủy</v-btn>
-          <v-btn
-            color="error"
-            variant="flat"
-            @click="confirmExecute"
-          >
-            Xác nhận
-          </v-btn>
+          <v-btn color="error" variant="flat" @click="confirmExecute"> Xác nhận </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -251,7 +207,7 @@ import {
   getAdminInternshipPeriodById,
   createInternshipPeriod,
   updateInternshipPeriod,
-  deleteInternshipPeriod
+  deleteInternshipPeriod,
 } from '@/services/registrationService'
 import TeleportModal from '@/components/TeleportModal.vue'
 
@@ -275,20 +231,20 @@ const filters = reactive({
   description: '',
   status: null,
   startDate: '',
-  endDate: ''
+  endDate: '',
 })
 
 const statusOptions = [
   { title: 'Tất cả', value: null },
   { title: 'Hoạt động', value: 'ACTIVE' },
   { title: 'Sắp tới', value: 'UPCOMING' },
-  { title: 'Đã kết thúc', value: 'END' }
+  { title: 'Đã kết thúc', value: 'END' },
 ]
 
 const statusSelectOptions = [
   { title: 'Hoạt động', value: 'ACTIVE' },
   { title: 'Sắp tới', value: 'UPCOMING' },
-  { title: 'Đã kết thúc', value: 'END' }
+  { title: 'Đã kết thúc', value: 'END' },
 ]
 
 const defaultItem = {
@@ -300,10 +256,10 @@ const defaultItem = {
   status: 'UPCOMING',
   description: '',
   createdAt: null,
-  updatedAt: null
+  updatedAt: null,
 }
 
-const editedItem = reactive({...defaultItem})
+const editedItem = reactive({ ...defaultItem })
 
 const headers = [
   { title: 'Mã kỳ', key: 'id', sortable: true },
@@ -313,9 +269,7 @@ const headers = [
   { title: 'Bắt đầu ĐK', key: 'registrationStartDate', sortable: true },
   { title: 'Kết thúc ĐK', key: 'registrationEndDate', sortable: true },
   { title: 'Trạng thái', key: 'status', sortable: true },
-  { title: 'Ngày tạo', key: 'createdAt', sortable: true },
-  { title: 'Ngày cập nhật', key: 'updatedAt', sortable: true },
-  { title: 'Thao tác', key: 'actions', sortable: false }
+  { title: 'Thao tác', key: 'actions', sortable: false },
 ]
 
 const modalTitle = computed(() => {
@@ -326,9 +280,9 @@ const modalTitle = computed(() => {
 // Get status color
 const getStatusColor = (status) => {
   const colors = {
-    'ACTIVE': 'green',
-    'UPCOMING': 'blue',
-    'END': 'grey'
+    ACTIVE: 'green',
+    UPCOMING: 'blue',
+    END: 'grey',
   }
   return colors[status] || 'grey'
 }
@@ -336,9 +290,9 @@ const getStatusColor = (status) => {
 // Get status text
 const getStatusText = (status) => {
   const texts = {
-    'ACTIVE': 'Hoạt động',
-    'UPCOMING': 'Sắp tới',
-    'END': 'Đã kết thúc'
+    ACTIVE: 'Hoạt động',
+    UPCOMING: 'Sắp tới',
+    END: 'Đã kết thúc',
   }
   return texts[status] || status
 }
@@ -359,8 +313,8 @@ const formatDateTime = (dateString) => {
 
 // Computed property để lọc dữ liệu
 const filteredItems = computed(() => {
-  return internshipPeriods.value.filter(item => {
-    return Object.keys(filters).every(key => {
+  return internshipPeriods.value.filter((item) => {
+    return Object.keys(filters).every((key) => {
       if (!filters[key] && filters[key] !== false) return true
 
       if (key === 'status') {
@@ -442,7 +396,7 @@ const save = async () => {
       registrationStartDate: editedItem.registrationStartDate,
       registrationEndDate: editedItem.registrationEndDate,
       status: editedItem.status,
-      description: editedItem.description
+      description: editedItem.description,
     }
 
     if (editedIndex.value === -1) {

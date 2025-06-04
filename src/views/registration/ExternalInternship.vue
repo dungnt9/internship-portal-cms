@@ -4,9 +4,7 @@
       <v-card-title>
         Quản lý Thực tập đơn vị chưa liên kết
         <v-spacer></v-spacer>
-        <v-btn color="primary" class="ml-4" @click="openAddModal">
-          Thêm Đăng ký mới
-        </v-btn>
+        <v-btn color="primary" class="ml-4" @click="openAddModal"> Thêm Đăng ký mới </v-btn>
       </v-card-title>
 
       <!-- Bảng dữ liệu với lọc -->
@@ -50,10 +48,7 @@
 
         <!-- Slot cho cột trạng thái -->
         <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="getStatusColor(item.status)"
-            text-color="white"
-          >
+          <v-chip :color="getStatusColor(item.status)" text-color="white">
             {{ getStatusText(item.status) }}
           </v-chip>
         </template>
@@ -73,25 +68,9 @@
           <span v-else class="text-grey">Chưa có file</span>
         </template>
 
-        <!-- Slot cho cột ngày tạo -->
-        <template v-slot:item.createdAt="{ item }">
-          {{ formatDate(item.createdAt) }}
-        </template>
-
-        <!-- Slot cho cột ngày cập nhật -->
-        <template v-slot:item.updatedAt="{ item }">
-          {{ formatDate(item.updatedAt) }}
-        </template>
-
         <!-- Slot cho cột thao tác -->
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            size="small"
-            class="mr-2"
-            @click="openViewModal(item)"
-          >
-            mdi-eye
-          </v-icon>
+          <v-icon size="small" class="mr-2" @click="openViewModal(item)"> mdi-eye </v-icon>
           <v-icon
             v-if="item.status === 'PENDING'"
             size="small"
@@ -110,19 +89,10 @@
           >
             mdi-close-circle
           </v-icon>
-          <v-icon
-            size="small"
-            class="mr-2"
-            color="blue"
-            @click="openUploadModal(item)"
-          >
+          <v-icon size="small" class="mr-2" color="blue" @click="openUploadModal(item)">
             mdi-file-upload
           </v-icon>
-          <v-icon
-            size="small"
-            color="error"
-            @click="deleteExternalInternship(item)"
-          >
+          <v-icon size="small" color="error" @click="deleteExternalInternship(item)">
             mdi-delete
           </v-icon>
         </template>
@@ -149,7 +119,7 @@
                 item-value="id"
                 label="Sinh viên"
                 :readonly="dialogView || editedIndex > -1"
-                :rules="[v => !!v || 'Vui lòng chọn sinh viên']"
+                :rules="[(v) => !!v || 'Vui lòng chọn sinh viên']"
                 required
               ></v-autocomplete>
             </v-col>
@@ -161,7 +131,7 @@
                 item-value="id"
                 label="Kỳ thực tập"
                 :readonly="dialogView || editedIndex > -1"
-                :rules="[v => !!v || 'Vui lòng chọn kỳ thực tập']"
+                :rules="[(v) => !!v || 'Vui lòng chọn kỳ thực tập']"
                 required
               ></v-select>
             </v-col>
@@ -189,23 +159,9 @@
                 label="File xác nhận (PDF)"
                 accept=".pdf"
                 prepend-icon="mdi-file-pdf-box"
-                :rules="[v => !!v || 'Vui lòng chọn file xác nhận']"
+                :rules="[(v) => !!v || 'Vui lòng chọn file xác nhận']"
                 required
               ></v-file-input>
-            </v-col>
-            <v-col cols="12" sm="6" v-if="dialogView">
-              <v-text-field
-                :model-value="formatDate(editedItem.createdAt)"
-                label="Ngày tạo"
-                readonly
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" v-if="dialogView">
-              <v-text-field
-                :model-value="formatDate(editedItem.updatedAt)"
-                label="Ngày cập nhật"
-                readonly
-              ></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -227,7 +183,7 @@
               label="File xác nhận mới (PDF)"
               accept=".pdf"
               prepend-icon="mdi-file-pdf-box"
-              :rules="[v => !!v || 'Vui lòng chọn file xác nhận']"
+              :rules="[(v) => !!v || 'Vui lòng chọn file xác nhận']"
               required
             ></v-file-input>
           </v-col>
@@ -244,7 +200,9 @@
           <v-spacer></v-spacer>
           <v-btn variant="text" @click="confirmDialog = false">Hủy</v-btn>
           <v-btn
-            :color="confirmAction === 'approve' ? 'green' : confirmAction === 'reject' ? 'red' : 'error'"
+            :color="
+              confirmAction === 'approve' ? 'green' : confirmAction === 'reject' ? 'red' : 'error'
+            "
             variant="flat"
             @click="confirmExecute"
           >
@@ -263,15 +221,15 @@ import {
   createExternalInternship,
   updateExternalInternshipStatus,
   updateExternalInternshipFile,
-  deleteExternalInternshipById
+  deleteExternalInternshipById,
 } from '@/services/registrationService'
 import { getStudents } from '@/services/userService'
-import { getInternshipPeriods } from '@/services/registrationService'
+import { getAdminInternshipPeriods } from '@/services/registrationService'
 import TeleportModal from '@/components/TeleportModal.vue'
 import { viewFile as getFileViewUrl } from '@/services/fileService'
 
 const viewFile = (filePath) => {
-  const fileUrl = getFileViewUrl(filePath)  // ✅ Gọi function import
+  const fileUrl = getFileViewUrl(filePath) // ✅ Gọi function import
   window.open(fileUrl, '_blank')
 }
 
@@ -303,7 +261,7 @@ const filters = reactive({
   studentName: '',
   studentEmail: '',
   periodId: '',
-  status: null
+  status: null,
 })
 
 const statusOptions = [
@@ -311,7 +269,7 @@ const statusOptions = [
   { title: 'Chờ duyệt', value: 'PENDING' },
   { title: 'Đã duyệt', value: 'APPROVED' },
   { title: 'Từ chối', value: 'REJECTED' },
-  { title: 'Đã hủy', value: 'CANCELLED' }
+  { title: 'Đã hủy', value: 'CANCELLED' },
 ]
 
 const defaultItem = {
@@ -319,10 +277,10 @@ const defaultItem = {
   studentId: null,
   periodId: '',
   confirmationFilePath: '',
-  status: 'PENDING'
+  status: 'PENDING',
 }
 
-const editedItem = reactive({...defaultItem})
+const editedItem = reactive({ ...defaultItem })
 
 const headers = [
   { title: 'ID', key: 'id', sortable: true },
@@ -332,9 +290,7 @@ const headers = [
   { title: 'Kỳ thực tập', key: 'periodId', sortable: true },
   { title: 'File xác nhận', key: 'confirmationFilePath', sortable: false },
   { title: 'Trạng thái', key: 'status', sortable: true },
-  { title: 'Ngày tạo', key: 'createdAt', sortable: true },
-  { title: 'Ngày cập nhật', key: 'updatedAt', sortable: true },
-  { title: 'Thao tác', key: 'actions', sortable: false }
+  { title: 'Thao tác', key: 'actions', sortable: false },
 ]
 
 const modalTitle = computed(() => {
@@ -345,10 +301,10 @@ const modalTitle = computed(() => {
 // Get status color
 const getStatusColor = (status) => {
   const colors = {
-    'PENDING': 'orange',
-    'APPROVED': 'green',
-    'REJECTED': 'red',
-    'CANCELLED': 'grey'
+    PENDING: 'orange',
+    APPROVED: 'green',
+    REJECTED: 'red',
+    CANCELLED: 'grey',
   }
   return colors[status] || 'grey'
 }
@@ -356,10 +312,10 @@ const getStatusColor = (status) => {
 // Get status text
 const getStatusText = (status) => {
   const texts = {
-    'PENDING': 'Chờ duyệt',
-    'APPROVED': 'Đã duyệt',
-    'REJECTED': 'Từ chối',
-    'CANCELLED': 'Đã hủy'
+    PENDING: 'Chờ duyệt',
+    APPROVED: 'Đã duyệt',
+    REJECTED: 'Từ chối',
+    CANCELLED: 'Đã hủy',
   }
   return texts[status] || status
 }
@@ -373,8 +329,8 @@ const formatDate = (dateString) => {
 
 // Computed property để lọc dữ liệu
 const filteredItems = computed(() => {
-  return externalInternships.value.filter(item => {
-    return Object.keys(filters).every(key => {
+  return externalInternships.value.filter((item) => {
+    return Object.keys(filters).every((key) => {
       if (!filters[key] && filters[key] !== false) return true
 
       if (key === 'status') {
@@ -405,9 +361,9 @@ const fetchStudents = async () => {
   loadingStudents.value = true
   try {
     const response = await getStudents()
-    students.value = response.data.map(student => ({
+    students.value = response.data.map((student) => ({
       ...student,
-      displayName: `${student.studentCode} - ${student.name}`
+      displayName: `${student.studentCode} - ${student.name}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách sinh viên:', error)
@@ -418,10 +374,10 @@ const fetchStudents = async () => {
 
 const fetchPeriods = async () => {
   try {
-    const response = await getInternshipPeriods()
-    periods.value = response.data.map(period => ({
+    const response = await getAdminInternshipPeriods()
+    periods.value = response.data.map((period) => ({
       ...period,
-      displayName: `${period.id} - ${period.description}`
+      displayName: `${period.id} - ${period.description}`,
     }))
   } catch (error) {
     console.error('Lỗi khi lấy danh sách kỳ thực tập:', error)
@@ -517,7 +473,7 @@ const save = async () => {
     const formData = new FormData()
     const data = {
       studentId: editedItem.studentId,
-      periodId: editedItem.periodId
+      periodId: editedItem.periodId,
     }
     formData.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' }))
     formData.append('confirmationFile', confirmationFile.value)
