@@ -4,9 +4,7 @@
       <v-card-title>
         Quản lý Công ty
         <v-spacer></v-spacer>
-        <v-btn color="primary" class="ml-4" @click="openAddModal">
-          Thêm Công ty
-        </v-btn>
+        <v-btn color="primary" class="ml-4" @click="openAddModal"> Thêm Công ty </v-btn>
       </v-card-title>
 
       <!-- Bảng dữ liệu với lọc -->
@@ -27,7 +25,12 @@
           <tr>
             <th v-for="column in columns" :key="`filter-${column.key}`" :class="column.class">
               <v-text-field
-                v-if="column.key !== 'actions' && column.key !== 'isVerified' && column.key !== 'isForeignCompany' && column.key !== 'isLinked'"
+                v-if="
+                  column.key !== 'actions' &&
+                  column.key !== 'isVerified' &&
+                  column.key !== 'isForeignCompany' &&
+                  column.key !== 'isLinked'
+                "
                 v-model="filters[column.key]"
                 hide-details
                 density="compact"
@@ -36,7 +39,11 @@
                 placeholder="Lọc..."
               ></v-text-field>
               <v-select
-                v-if="column.key === 'isVerified' || column.key === 'isForeignCompany' || column.key === 'isLinked'"
+                v-if="
+                  column.key === 'isVerified' ||
+                  column.key === 'isForeignCompany' ||
+                  column.key === 'isLinked'
+                "
                 v-model="filters[column.key]"
                 :items="booleanOptions"
                 hide-details
@@ -50,30 +57,21 @@
 
         <!-- Slot cho cột trạng thái xác thực -->
         <template v-slot:item.isVerified="{ item }">
-          <v-chip
-            :color="item.isVerified ? 'green' : 'amber'"
-            text-color="white"
-          >
+          <v-chip :color="item.isVerified ? 'green' : 'amber'" text-color="white">
             {{ item.isVerified ? 'Đã xác thực' : 'Chưa xác thực' }}
           </v-chip>
         </template>
 
         <!-- Slot cho cột công ty nước ngoài -->
         <template v-slot:item.isForeignCompany="{ item }">
-          <v-chip
-            :color="item.isForeignCompany ? 'blue' : 'grey'"
-            text-color="white"
-          >
+          <v-chip :color="item.isForeignCompany ? 'blue' : 'grey'" text-color="white">
             {{ item.isForeignCompany ? 'Công ty nước ngoài' : 'Công ty trong nước' }}
           </v-chip>
         </template>
 
         <!-- Slot cho cột đã liên kết -->
         <template v-slot:item.isLinked="{ item }">
-          <v-chip
-            :color="item.isLinked ? 'indigo' : 'grey'"
-            text-color="white"
-          >
+          <v-chip :color="item.isLinked ? 'indigo' : 'grey'" text-color="white">
             {{ item.isLinked ? 'Đã liên kết' : 'Chưa liên kết' }}
           </v-chip>
         </template>
@@ -85,20 +83,8 @@
 
         <!-- Slot cho cột thao tác -->
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            size="small"
-            class="mr-2"
-            @click="openViewModal(item)"
-          >
-            mdi-eye
-          </v-icon>
-          <v-icon
-            size="small"
-            class="mr-2"
-            @click="openEditModal(item)"
-          >
-            mdi-pencil
-          </v-icon>
+          <v-icon size="small" class="mr-2" @click="openViewModal(item)"> mdi-eye </v-icon>
+          <v-icon size="small" class="mr-2" @click="openEditModal(item)"> mdi-pencil </v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -119,7 +105,7 @@
                 v-model="editedItem.name"
                 label="Tên công ty"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng nhập tên công ty']"
+                :rules="[(v) => !!v || 'Vui lòng nhập tên công ty']"
                 required
               ></v-text-field>
             </v-col>
@@ -128,7 +114,7 @@
                 v-model="editedItem.shortName"
                 label="Tên viết tắt"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng nhập tên viết tắt']"
+                :rules="[(v) => !!v || 'Vui lòng nhập tên viết tắt']"
                 required
               ></v-text-field>
             </v-col>
@@ -137,7 +123,7 @@
                 v-model="editedItem.taxCode"
                 label="Mã số thuế"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng nhập mã số thuế']"
+                :rules="[(v) => !!v || 'Vui lòng nhập mã số thuế']"
                 required
               ></v-text-field>
             </v-col>
@@ -147,8 +133,11 @@
                 label="Website"
                 :readonly="dialogView"
                 :rules="[
-                  v => !!v || 'Vui lòng nhập website',
-                  v => /^(http(s)?:\/\/)?(www\.)?[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(v) || 'Website không hợp lệ'
+                  (v) => !!v || 'Vui lòng nhập website',
+                  (v) =>
+                    /^(http(s)?:\/\/)?(www\.)?[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(
+                      v,
+                    ) || 'Website không hợp lệ',
                 ]"
                 required
               ></v-text-field>
@@ -158,7 +147,7 @@
                 v-model="editedItem.businessType"
                 label="Loại hình kinh doanh"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng nhập loại hình kinh doanh']"
+                :rules="[(v) => !!v || 'Vui lòng nhập loại hình kinh doanh']"
                 required
               ></v-text-field>
             </v-col>
@@ -169,8 +158,9 @@
                 type="number"
                 :readonly="dialogView"
                 :rules="[
-                  v => !!v || 'Vui lòng nhập năm thành lập',
-                  v => v > 1900 && v <= new Date().getFullYear() || 'Năm thành lập không hợp lệ'
+                  (v) => !!v || 'Vui lòng nhập năm thành lập',
+                  (v) =>
+                    (v > 1900 && v <= new Date().getFullYear()) || 'Năm thành lập không hợp lệ',
                 ]"
                 required
               ></v-text-field>
@@ -181,7 +171,7 @@
                 label="Số lượng nhân viên"
                 type="number"
                 :readonly="dialogView"
-                :rules="[v => v >= 0 || 'Số lượng nhân viên không hợp lệ']"
+                :rules="[(v) => v >= 0 || 'Số lượng nhân viên không hợp lệ']"
                 required
               ></v-text-field>
             </v-col>
@@ -191,7 +181,7 @@
                 label="Vốn (VNĐ)"
                 type="number"
                 :readonly="dialogView"
-                :rules="[v => v >= 0 || 'Vốn không hợp lệ']"
+                :rules="[(v) => v >= 0 || 'Vốn không hợp lệ']"
                 required
               ></v-text-field>
             </v-col>
@@ -200,7 +190,7 @@
                 v-model="editedItem.address"
                 label="Địa chỉ"
                 :readonly="dialogView"
-                :rules="[v => !!v || 'Vui lòng nhập địa chỉ']"
+                :rules="[(v) => !!v || 'Vui lòng nhập địa chỉ']"
                 required
               ></v-text-field>
             </v-col>
@@ -237,13 +227,6 @@
                 color="indigo"
               ></v-switch>
             </v-col>
-            <v-col cols="12" v-if="editedItem.rejectionReason && dialogView">
-              <v-alert
-                type="warning"
-                title="Lý do từ chối"
-                :text="editedItem.rejectionReason"
-              ></v-alert>
-            </v-col>
           </v-row>
         </v-container>
       </v-form>
@@ -278,13 +261,13 @@ const filters = reactive({
   capital: '',
   isVerified: null,
   isForeignCompany: null,
-  isLinked: null
+  isLinked: null,
 })
 
 const booleanOptions = [
   { title: 'Tất cả', value: null },
   { title: 'Có', value: true },
-  { title: 'Không', value: false }
+  { title: 'Không', value: false },
 ]
 
 const defaultItem = {
@@ -303,11 +286,10 @@ const defaultItem = {
   logoPath: null,
   isVerified: false,
   verificationDate: null,
-  rejectionReason: null,
-  isLinked: false
+  isLinked: false,
 }
 
-const editedItem = reactive({...defaultItem})
+const editedItem = reactive({ ...defaultItem })
 
 const headers = [
   { title: 'ID', key: 'id', sortable: true },
@@ -321,7 +303,7 @@ const headers = [
   { title: 'Công ty nước ngoài', key: 'isForeignCompany', sortable: true },
   { title: 'Trạng thái xác thực', key: 'isVerified', sortable: true },
   { title: 'Đã liên kết', key: 'isLinked', sortable: true },
-  { title: 'Thao tác', key: 'actions', sortable: false }
+  { title: 'Thao tác', key: 'actions', sortable: false },
 ]
 
 const modalTitle = computed(() => {
@@ -337,9 +319,9 @@ const formatCurrency = (value) => {
 
 // Computed property để lọc dữ liệu
 const filteredItems = computed(() => {
-  return companies.value.filter(company => {
+  return companies.value.filter((company) => {
     // Kiểm tra tất cả các điều kiện lọc
-    return Object.keys(filters).every(key => {
+    return Object.keys(filters).every((key) => {
       // Nếu không có giá trị lọc cho trường này, trả về true
       if (!filters[key] && filters[key] !== false) return true
 
