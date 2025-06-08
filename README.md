@@ -1,35 +1,28 @@
-# cms
+Hướng dẫn chạy chương trình
+## Yêu cầu
 
-This template should help get you started developing with Vue 3 in Vite.
+- **Node.js** 18+
+- **npm** 9+
 
-## Recommended IDE Setup
+## Chuẩn bị môi trường
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+### 1. Cài đặt Node.js
 
-## Customize configuration
+Tải từ: [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Kiểm tra phiên bản:
 
-## Project Setup
+```bash
+node -v
+npm -v
+```
+
+## Chạy các lệnh sau để chạy chương trình
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
 ```sh
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```
