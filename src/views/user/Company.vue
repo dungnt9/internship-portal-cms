@@ -94,7 +94,7 @@
       v-model="showModal"
       :title="modalTitle"
       :view-only="dialogView"
-      :save-disabled="!valid"
+      :save-disabled="!isChanged"
       @save="save"
     >
       <v-form ref="form" v-model="valid">
@@ -306,6 +306,13 @@ const headers = [
   { title: 'Thao tác', key: 'actions', sortable: false },
 ]
 
+const originalItem = ref({ ...defaultItem })
+
+const isChanged = computed(() => {
+  // So sánh từng trường, chỉ cần 1 trường khác là true
+  return Object.keys(defaultItem).some((key) => editedItem[key] !== originalItem.value[key])
+})
+
 const modalTitle = computed(() => {
   if (dialogView.value) return 'Chi tiết Công ty'
   return editedIndex.value === -1 ? 'Thêm Công ty mới' : 'Chỉnh sửa Công ty'
@@ -369,12 +376,14 @@ const openAddModal = () => {
   dialogView.value = false
   editedIndex.value = -1
   Object.assign(editedItem, defaultItem)
+  originalItem.value = { ...defaultItem }
   showModal.value = true
 }
 
 const openViewModal = (item) => {
   editedIndex.value = companies.value.indexOf(item)
   Object.assign(editedItem, item)
+  originalItem.value = { ...item }
   dialogView.value = true
   showModal.value = true
 }
@@ -382,6 +391,7 @@ const openViewModal = (item) => {
 const openEditModal = (item) => {
   editedIndex.value = companies.value.indexOf(item)
   Object.assign(editedItem, item)
+  originalItem.value = { ...item }
   dialogView.value = false
   showModal.value = true
 }
