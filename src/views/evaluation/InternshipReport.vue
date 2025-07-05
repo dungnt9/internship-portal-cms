@@ -79,7 +79,7 @@
         <!-- Slot cho cột loại thực tập -->
         <template v-slot:item.isExternal="{ item }">
           <v-chip :color="item.isExternal ? 'orange' : 'blue'" text-color="white" size="small">
-            {{ item.isExternal ? 'Ngoài trường' : 'Trong trường' }}
+            {{ item.isExternal ? 'Chưa liên kết' : 'Liên kết' }}
           </v-chip>
         </template>
 
@@ -197,7 +197,7 @@
             </v-col>
             <v-col cols="12" sm="6" v-if="editedItem.isExternal !== null">
               <v-text-field
-                :model-value="editedItem.isExternal ? 'Ngoài trường' : 'Trong trường'"
+                :model-value="editedItem.isExternal ? 'Chưa liên kết' : 'Liên kết'"
                 label="Loại thực tập"
                 readonly
                 variant="outlined"
@@ -371,8 +371,8 @@ const submittedOptions = [
 
 const externalOptions = [
   { title: 'Tất cả', value: null },
-  { title: 'Trong trường', value: false },
-  { title: 'Ngoài trường', value: true },
+  { title: 'Liên kết', value: false },
+  { title: 'Chưa liên kết', value: true },
 ]
 
 const defaultItem = {

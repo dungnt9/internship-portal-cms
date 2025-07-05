@@ -85,7 +85,7 @@
         <!-- Slot cho cột loại thực tập -->
         <template v-slot:item.isExternal="{ item }">
           <v-chip :color="item.isExternal ? 'orange' : 'blue'" text-color="white" size="small">
-            {{ item.isExternal ? 'Ngoài trường' : 'Trong trường' }}
+            {{ item.isExternal ? 'Chưa liên kết' : 'Liên kết' }}
           </v-chip>
         </template>
 
@@ -423,8 +423,8 @@ const statusOptions = [
 
 const externalOptions = [
   { title: 'Tất cả', value: null },
-  { title: 'Trong trường', value: false },
-  { title: 'Ngoài trường', value: true },
+  { title: 'Liên kết', value: false },
+  { title: 'Chưa liên kết', value: true },
 ]
 
 const confirmedOptions = [
